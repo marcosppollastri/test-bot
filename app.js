@@ -1,8 +1,18 @@
-const Discord = require('discord.js');
-const client = new Discord.Client();
+var express = require('express');
+var app = express();
+
+// Extract the required classes from the discord.js module
+const { Client, RichEmbed } = require('discord.js');
+
+// Create an instance of a Discord client
+const client = new Client();
+
+require('dotenv').config();
+
 
 client.on('ready', () => {
   console.log(`Logged in as ${client.user.tag}!`);
+  
 });
 
 client.on('message', msg => {
@@ -27,5 +37,26 @@ client.on('guildMemberAdd', member => {
   channel.send(`Comunicado número uno de la Junta de Comandantes Generales: Se comunica a la poblacion que a partir de la fecha, el servidor se encuentra bajo el control operacional de, ${member}` + ". Se recomienda a todos los habitantes el estricto acatamiento a las disposiciones y directivas que emanen de autoridad militar");
 });
 
+client.on('message', message => {
+  // If the message is "how to embed"
+  if (message.content === '=patas') {
+    // We can create embeds using the MessageEmbed constructor
+    // Read more about all that you can do with the constructor
+    // over at https://discord.js.org/#/docs/main/stable/class/RichEmbed
+    const embed = new RichEmbed()
+      // Set the title of the field
+      .setTitle('Cochino degenerado')
+      // Set the color of the embed
+      .setColor(0xFF0000)
+      // Set the main content of the embed
+      .setDescription('Las patas son lo maximo');
 
-client.login('NTc3ODM3MDY4OTY5ODM2NTc0.XNq38g.wm-nuF9ZpiWz1PENo7BG9YIk0bk');
+      embed.setImage('https://plantillasdememes.com/img/plantillas/larry-es-lo-maximo1.png');
+    // Send the embed to the same channel as the message
+    message.channel.send(embed);
+  }
+});
+
+
+
+client.login(process.env.DISCORD_TOKEN);
